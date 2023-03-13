@@ -1,7 +1,6 @@
 #bin/usr/interface
 
 import PySimpleGUI as sg
-import os
 import main
 
 
@@ -34,7 +33,7 @@ layout = [
                 [sg.Text('If a variable name is left blank, it will be ignored')],
                 [sg.Text('Names must be given exactly like the ones of the images files')],
                 [sg.HorizontalSeparator()],
-                [sg.Col([create_row()], scrollable = True, key = '-COLUMN-', s = (500, VERTICALSIZE))
+                [sg.Col([create_row() for _ in range(0,2)], scrollable = True, key = '-COLUMN-', s = (500, VERTICALSIZE))
                         ]], key = '-FRAME-')
             ],
             

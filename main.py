@@ -123,4 +123,4 @@ projectName = 'A'
 languageName = 'SPTest'
 outputName = f'{projectName}{languageName}'
 primaryValue = 0
-#main(folderPath, variables, primaryValue, outputName)
+# main(folderPath, variables, primaryValue, outputName)
