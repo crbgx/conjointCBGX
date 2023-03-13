@@ -1,12 +1,33 @@
 #bin/usr/merge_images
 
 from PIL import Image
+import itertools
 
 
-def join_image():
-    topImage = Image.open('Data/image1.png')
-    lowerImage =Image.open('Data/image2.png')
-    result = Image.new('RGB', (topImage.width, topImage.height + lowerImage.height))
-    result.paste(topImage, (0, 0))
-    result.paste(lowerImage, (0, topImage.height))
-    result.save('Data/joined.png')
+resultImages = []
+resultNames = []
+
+
+def join_image(imagesArray, variableIndex):
+    global resultImages
+    global resultNames
+    resultImages = []
+    resultNames = []
+    
+    sizes = []
+    for img in imagesArray:
+        size = img[0].size
+        sizes.append(size)
+    widths, heights = zip(*sizes)
+    totalHeight = sum(heights)
+    max_width = max(widths)
+
+    combinations = list(itertools.product(*variableIndex))
+    for combination in combinations:
+        resultNames.append('_'.join(combination))
+        result = Image.new('RGB', (max_width, totalHeight))
+        yOffset = 0
+        for indexImage, variableNumber in enumerate(combination):
+            result.paste(imagesArray[indexImage][int(variableNumber)-1], (0, yOffset))
+            yOffset += imagesArray[indexImage][int(variableNumber)-1].size[1]
+        resultImages.append(result)

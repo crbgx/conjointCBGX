@@ -40,6 +40,15 @@ def remove_empty_items(dataSelected, captionsSelected, coloursSelected):
     return dataSelected, captionsSelected, coloursSelected
 
 
+def detect_empty_list(listOfLists):
+    for index, list in enumerate(listOfLists):
+        if list == []:
+            print(f'ERROR: Variable {index} hasn\'t been found.')
+            print('Please check the names of the variables')
+            return False
+    return True
+
+
 def finish_timer(start):
     stop = time.time()
     seconds = round(stop - start, 0)
@@ -75,12 +84,26 @@ def main(folderPath, variableNames, outputName):
     print('Starting program...')
     start = time.time()
     load_images.load_images(folderPath, variableNames)
+    variableIndex = [[] for _ in variableNames]
+    for i, typeVariable in enumerate(load_images.variableLists):
+        for name in typeVariable:
+            variableIndex[i].append(get_string_between(name, '_', '.'))
+    if detect_empty_list(load_images.variableImages) == False:
+        finish_timer(start)
+        return
+    merge_images.join_image(load_images.variableImages, variableIndex)
+    finalNamesList = []
+    for i in merge_images.resultNames:
+        temp = [outputName, i]
+        finalNamesList.append('_'.join(temp))
+    
+    load_images.save_images(merge_images.resultImages, finalNamesList)
     finish_timer(start)
 
 
-folderPath = '/Data'
-variableNames = ['Marca', 'Motor', 'Cambio_Transmisión_Combinación', 'Transmision', 'Acabado', 'Precio']
+folderPath = 'D:/Github/conjointCBGX/Data'
+variableNames = ['Marca', 'Motor', 'Cambio_Transmisión_Combinación', 'Acabado', 'Precio']
 projectName = 'A'
 languageName = 'SPTest'
-outputName = f'{projectName, languageName}'
-#main(folderPath, variableNames, outputName)
+outputName = f'{projectName}{languageName}'
+main(folderPath, variableNames, outputName)

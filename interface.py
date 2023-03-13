@@ -26,6 +26,7 @@ layout = [
             [sg.Frame('List of variables to be added',
                 [[sg.Text('Add a new variable name:'), sg.B('+', key = '-ADD COLUMN-')],
                 [sg.Text('If a variable name is left blank, it will be ignored')],
+                [sg.Text('Names must be given exactly like the ones of the images files')],
                 [sg.HorizontalSeparator()],
                 [sg.Col([[]], scrollable = True, key = '-COLUMN-', s = (500, VERTICALSIZE))]], key = '-FRAME-')
             ],
@@ -60,7 +61,7 @@ while True:
         variableNames = [values[f'-VARIABLE_NAME_{i}-'] for i in range(0,countLines)]
         projectName = values['-PROJECT_NAME-']
         languageName = values['-LANGUAGE_NAME-']
-        outputName = f'{projectName, languageName}'
+        outputName = f'{projectName}{languageName}'
         main.main(folderPath, variableNames, outputName)
     
 window.close()

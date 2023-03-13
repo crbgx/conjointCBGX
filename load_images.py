@@ -1,29 +1,43 @@
 #bin/usr/load_images
 
-import glob
 import os
 from PIL import Image
+from natsort import natsorted
+import cv2
+import numpy as np
+
+
+variableLists = []
+variableImages = []
+
 
 def load_images(originalImagesPath, variableNames):
-    originalImages = glob.glob(originalImagesPath + '/*.jpg')
-    originalImages.sort()
-    originalImagesOrganized = []
-    for images in originalImages:
-        for name in variableNames:
-            temporalArray = []
-            if name in images:
-                temporalArray.append(images)
+    global variableLists
+    global variableImages
+    variableLists = [[] for _ in variableNames]
+    listado = natsorted(os.listdir(originalImagesPath))
+    for fileName in listado:
+        for i, name in enumerate(variableNames):
+            if name in fileName:
+                variableLists[i].append(f'{originalImagesPath}/{fileName}')
                 break
-        originalImagesOrganized.append(temporalArray)
-            
-    image = Image.open('Data/joined.png')
-    image.show()
 
-def save_images(conjointImages):
+    variableImages = [[] for _ in variableNames]
+    for i, typeVariable in enumerate(variableLists):
+        for image in typeVariable:
+            variableImages[i].append(Image.open(image))
+
+
+def save_images(conjointImages, fileNames):
     i = 1
-    folderDestination = f'Output_V{i}'
+    folderDestination = 'Output'
     while os.path.exists(folderDestination):
         i+=1
         folderDestination = f'{folderDestination}_V{i}'
-    for image in conjointImages:
-        image.save(f'{folderDestination}/{image.filename}')
+    os.mkdir(folderDestination)
+    count = 0
+    for image, name in zip(conjointImages, fileNames):
+        cv2.imwrite(f'{folderDestination}/{name}.png', np.array(image))
+        if count%100==0 or count == len(fileNames)-1:
+            print('Images conjoint saved: ', count)
+        count += 1
