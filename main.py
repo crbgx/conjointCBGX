@@ -80,9 +80,20 @@ def get_string_before_last(string, char):
 
 
 ##############################     MAIN PROGRAM     ##############################
-def main(folderPath, variableNames, outputName):
+def main(folderPath, variableNames, primaryValue, outputName):
     print('Starting program...')
     start = time.time()
+
+    # Chck if files and names have been selected
+    if folderPath == '':
+        print('No folder selected')
+        finish_timer(start)
+        return
+    if variableNames == []:
+        print('No variables selected')
+        finish_timer(start)
+        return
+    
     load_images.load_images(folderPath, variableNames)
     variableIndex = [[] for _ in variableNames]
     for i, typeVariable in enumerate(load_images.variableLists):
@@ -91,6 +102,7 @@ def main(folderPath, variableNames, outputName):
     if detect_empty_list(load_images.variableImages) == False:
         finish_timer(start)
         return
+
     merge_images.join_image(load_images.variableImages, variableIndex)
     finalNamesList = []
     for i in merge_images.resultNames:
@@ -101,9 +113,9 @@ def main(folderPath, variableNames, outputName):
     finish_timer(start)
 
 
-folderPath = 'D:/Github/conjointCBGX/Data'
+folderPath = 'conjointCBGX/Data'
 variableNames = ['Marca', 'Motor', 'Cambio_Transmisión_Combinación', 'Acabado', 'Precio']
 projectName = 'A'
 languageName = 'SPTest'
 outputName = f'{projectName}{languageName}'
-main(folderPath, variableNames, outputName)
+#main(folderPath, variableNames, outputName)

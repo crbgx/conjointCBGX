@@ -46,7 +46,9 @@ while True:
 
     elif event == '-ADD COLUMN-':
         if countLines < LIMIT:
-            window.extend_layout(window['-COLUMN-'], [[sg.Text(f'Variable name {countLines}:'), sg.InputText(key=f'-VARIABLE_NAME_{countLines}-', enable_events=True, size = (15, 1))]])
+            window.extend_layout(window['-COLUMN-'], [[sg.Text(f'Variable name {countLines}:'),
+                                                       sg.InputText(key=f'-VARIABLE_NAME_{countLines}-', enable_events=True, size = (15, 1)),
+                                                       sg.Radio('Primary value', '-PRIMARY-', key = f'-PRIMARY_KEY_{countLines}-', default = True if countLines == 0 else False)]])
             window.visibility_changed()
             window['-COLUMN-'].contents_changed()
             countLines += 1
@@ -57,11 +59,15 @@ while True:
             countLines += 1
 
     elif event == 'EXECUTE_MAIN':
+        for i in range(0,countLines):
+            if values[f'-PRIMARY_KEY_{i}-']:
+                primaryValue = i
+                break
         folderPath = values['-FOLDER_PATH-']
         variableNames = [values[f'-VARIABLE_NAME_{i}-'] for i in range(0,countLines)]
         projectName = values['-PROJECT_NAME-']
         languageName = values['-LANGUAGE_NAME-']
         outputName = f'{projectName}{languageName}'
-        main.main(folderPath, variableNames, outputName)
+        main.main(folderPath, variableNames, primaryValue, outputName)
     
 window.close()
