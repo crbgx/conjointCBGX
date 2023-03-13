@@ -78,27 +78,29 @@ def get_string_before_last(string, char):
     return result
 
 
+def check_file_not_empty(folderPath, variables, primaryValue):
+    if folderPath == '':
+        print('No folder selected')
+        return False
+    if variables == []:
+        print('No variables selected')
+        return False
+    if primaryValue == None:
+        print('No primary value selected')
+        return False
+    return True
 
 ##############################     MAIN PROGRAM     ##############################
 def main(folderPath, variables, primaryValue, outputName):
     print('Starting program...')
     start = time.time()
-
-    # Check if files and names have been selected
-    if folderPath == '':
-        print('No folder selected')
-        finish_timer(start)
-        return
-    if variables == []:
-        print('No variables selected')
-        finish_timer(start)
-        return
-    if primaryValue == None:
-        print('No primary value selected')
-        finish_timer(start)
-        return
     
+    if check_file_not_empty(folderPath, variables, primaryValue) == False:
+        finish_timer(start)
+        return
+
     load_images.load_images(folderPath, variables)
+    
     variableIndex = [[] for _ in variables]
     for i, typeVariable in enumerate(load_images.variableLists):
         for name in typeVariable:
