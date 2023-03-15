@@ -14,6 +14,7 @@ variableImages = []
 def load_images(originalImagesPath, variableNames):
     global variableLists
     global variableImages
+    # Groups in sublists paths to files with common variable name
     variableLists = [[] for _ in variableNames]
     listado = natsorted(os.listdir(originalImagesPath))
     for fileName in listado:
@@ -22,6 +23,7 @@ def load_images(originalImagesPath, variableNames):
                 variableLists[i].append(f'{originalImagesPath}/{fileName}')
                 break
 
+    # Groups in sublists images objects with common variable name
     variableImages = [[] for _ in variableNames]
     for i, typeVariable in enumerate(variableLists):
         for image in typeVariable:

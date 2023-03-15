@@ -5,39 +5,7 @@ import time
 from humanfriendly import format_timespan
 import load_images
 import merge_images
-
-
-def check_file_type_video(filePath):
-    if filePath == '':
-        print('No file selected')
-        return False
-    elif filePath[-4:] != '.mp4' or filePath[-5:] == '.mpeg':
-        print('Video file format is not valid')
-        return False
-    return True
-
-
-def check_file_type_data(filePath):
-    if filePath == []:
-        print('No file selected')
-        return False
-    for i in filePath:
-        if i[-4:] != '.dat':
-            print('Data file format is not valid')
-            return False
-    return True
-
-
-def remove_empty_items(dataSelected, captionsSelected, coloursSelected):
-    try:
-        index  = [index for (index, item) in enumerate(dataSelected) if item == '']
-        for i in reversed(index):
-            del dataSelected[i]
-            del captionsSelected[i]
-            del coloursSelected[i]
-    except ValueError:
-        pass
-    return dataSelected, captionsSelected, coloursSelected
+import select_files
 
 
 def detect_empty_list(listOfLists):
@@ -56,28 +24,6 @@ def finish_timer(start):
     print('Elapsed time: ', format_timespan(seconds))
 
 
-def get_string_between(string, char1, char2):
-    result = ''
-    try:
-        start = string.rindex(char1)
-        end = string.rindex(char2)
-        if start >= 0 and end >= 0:
-            result = string[start+1: end]
-    except ValueError:
-        pass
-    return result
-
-def get_string_before_last(string, char):
-    result = ''
-    try:
-        end = string.rindex(char)
-        if end >= 0:
-            result = string[:end]
-    except ValueError:
-        pass
-    return result
-
-
 def check_file_not_empty(folderPath, variables, primaryValue):
     if folderPath == '':
         print('No folder selected')
@@ -91,7 +37,7 @@ def check_file_not_empty(folderPath, variables, primaryValue):
     return True
 
 ##############################     MAIN PROGRAM     ##############################
-def main(folderPath, variables, primaryValue, outputName):
+def main(folderPath, variables, primaryValue, outputName, simpleMode):
     print('Starting program...')
     start = time.time()
     
@@ -101,11 +47,11 @@ def main(folderPath, variables, primaryValue, outputName):
 
     load_images.load_images(folderPath, variables)
     
-    variableIndex = [[] for _ in variables]
-    for i, typeVariable in enumerate(load_images.variableLists):
-        for name in typeVariable:
-            variableIndex[i].append(get_string_between(name, '_', '.'))
+    #Aqui meter select_files()
+    variableIndex = select_files.select_files(variables, load_images.variableLists, simpleMode)
+
     if detect_empty_list(load_images.variableImages) == False:
+        print('No files where found with those names')
         finish_timer(start)
         return
 
@@ -121,8 +67,9 @@ def main(folderPath, variables, primaryValue, outputName):
 
 folderPath = 'conjointCBGX/Data'
 variables = ['Marca', 'Motor', 'Cambio_Transmisión_Combinación', 'Acabado', 'Precio']
+primaryValue = 0
 projectName = 'A'
 languageName = 'SPTest'
 outputName = f'{projectName}{languageName}'
-primaryValue = 0
-# main(folderPath, variables, primaryValue, outputName)
+simpleMode = True
+main(folderPath, variables, primaryValue, outputName, simpleMode)

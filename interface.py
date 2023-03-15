@@ -27,6 +27,7 @@ layout = [
             [sg.InputText(key='-FOLDER_PATH-', size = (70, 1)), sg.FolderBrowse()],
             [sg.Text('Project:'), sg.InputText(key = '-PROJECT-', size = (42, 1))],
             [sg.Text('Language:'), sg.InputText(key = '-LANGUAGE-', size = (40, 1))],
+            [sg.Text('Execution mode:'), sg.Radio('Simple', '-MODE-', key = f'-SIMPLE_MODE-', default = True), sg.Radio('Relative', '-MODE-', key = f'-RELATIVE_MODE-', default = False)],
 
             [sg.Frame('List of variables to be added',
                 [[sg.Text('Add a new variable name:'), sg.B('+', key = '-ADD COLUMN-')],
@@ -72,6 +73,7 @@ while True:
         project = values['-PROJECT-']
         laguage = values['-LANGUAGE-']
         outputName = f'{project}{laguage}'
-        main.main(folderPath, variables, primaryValue, outputName)
+        simpleMode = True if values['-SIMPLE_MODE-'] else False
+        main.main(folderPath, variables, primaryValue, outputName, simpleMode)
     
 window.close()
