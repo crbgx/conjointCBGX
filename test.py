@@ -1,42 +1,16 @@
-#bin/usr/main
+#bin/usr/test
 
 from moviepy.editor import *
 import time
 from humanfriendly import format_timespan
-import load_images
 import merge_images
 import select_files
 
 
-def detect_empty_list(listOfLists, start):
-    for index, list in enumerate(listOfLists):
-        if list == []:
-            print(f'ERROR: Variable {index} hasn\'t been found.')
-            print('Please check the names of the variables')
-            print('No files where found with those names')
-            finish_timer(start)
-            return False
-    return True
 
 
-def finish_timer(start):
-    stop = time.time()
-    seconds = round(stop - start, 0)
-    print('Finishing program...')
-    print('Elapsed time: ', format_timespan(seconds))
+def load_images(folderPath, variables):
 
-
-def check_file_not_empty(folderPath, variables, primaryValue):
-    if folderPath == '':
-        print('No folder selected')
-        return False
-    if variables == []:
-        print('No variables selected')
-        return False
-    if primaryValue == None:
-        print('No primary value selected')
-        return False
-    return True
 
 
 
@@ -63,7 +37,26 @@ def main(folderPath, variables, primaryValue, outputName, simpleMode):
         finalNamesList.append('_'.join(temp))
     
     load_images.save_images(merge_images.resultImages, finalNamesList)
-    finish_timer(start)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ##############################     TEST PROGRAM     ##############################
@@ -74,4 +67,3 @@ projectName = 'A'
 languageName = 'SPTest'
 outputName = f'{projectName}{languageName}'
 simpleMode = True
-#main(folderPath, variables, primaryValue, outputName, simpleMode)

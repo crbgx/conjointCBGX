@@ -6,10 +6,15 @@ def select_files(variables, variableLists, simpleMode):
         for i, typeVariable in enumerate(variableLists):
             for name in typeVariable:
                 variableIndex[i].append(get_string_between_last(name, '_', '.'))
-    else:
+    else:   # TO DO
         for i, typeVariable in enumerate(variableLists):
             for name in typeVariable:
-                variableIndex[i].append(get_string_between_last(name, '/', '.'))
+                fileName = get_string_between_last(name, '/', '.')
+                if get_string_between_sames(fileName, '_') == '':
+                    variableIndex[i].append(fileName)
+                else:
+                    get_string_before_last(fileName, '_')
+                    variableIndex[i].append(get_string_between_last(name, '/', '.'))
     return variableIndex
 
 
