@@ -10,7 +10,20 @@ import select_files
 
 
 def load_images(folderPath, variables):
+    # Groups in sublists paths to files with common variable name
+    variableLists = [[] for _ in variableNames]
+    listado = natsorted(os.listdir(originalImagesPath))
+    for fileName in listado:
+        for i, name in enumerate(variableNames):
+            if name in fileName:
+                variableLists[i].append(f'{originalImagesPath}/{fileName}')
+                break
 
+    # Groups in sublists images objects with common variable name
+    variableImages = [[] for _ in variableNames]
+    for i, typeVariable in enumerate(variableLists):
+        for image in typeVariable:
+            variableImages[i].append(Image.open(image).convert('RGB'))
 
 
 
@@ -24,7 +37,7 @@ def main(folderPath, variables, primaryValue, outputName, simpleMode):
         finish_timer(start)
         return
 
-    load_images.load_images(folderPath, variables)
+    load_images(folderPath, variables)
     
     variableIndex = select_files.select_files(variables, load_images.variableLists, simpleMode)
 
