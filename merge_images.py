@@ -22,6 +22,7 @@ def join_image(imagesArray, variableIndex):
     max_width = max(widths)
 
     combinations = list(itertools.product(*variableIndex))
+    print(combinations)
     
     for combination in combinations:
         result = Image.new('RGB', (max_width, totalHeight))

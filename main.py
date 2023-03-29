@@ -78,7 +78,7 @@ def main(folderPath, variables, primaryValue, outputName, simpleMode):
     load_images.load_images(folderPath, variables)
     
     variableIndex = select_files.select_files(variables, load_images.variableLists, simpleMode)
-
+    print(variableIndex)
     detect_empty_list(load_images.variableImages, start)
 
     merge_images.join_image(load_images.variableImages, variableIndex)
@@ -87,7 +87,7 @@ def main(folderPath, variables, primaryValue, outputName, simpleMode):
         temp = [outputName, i]
         finalNamesList.append('_'.join(temp))
     
-    load_images.save_images(merge_images.resultImages, finalNamesList)
+    #load_images.save_images(merge_images.resultImages, finalNamesList)
     finish_timer(start)
 
 
@@ -99,4 +99,4 @@ projectName = 'A'
 languageName = 'SPTest'
 outputName = f'{projectName}{languageName}'
 simpleMode = True
-#main(folderPath, variables, primaryValue, outputName, simpleMode)
+main(folderPath, variables, primaryValue, outputName, simpleMode)
