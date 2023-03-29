@@ -22,7 +22,7 @@ def load_images(originalImagesPath, variableNames):
             if name in fileName:
                 variableLists[i].append(f'{originalImagesPath}/{fileName}')
                 break
-
+    print(variableLists)
     # Groups in sublists images objects with common variable name
     variableImages = [[] for _ in variableNames]
     for i, typeVariable in enumerate(variableLists):
@@ -44,3 +44,7 @@ def save_images(conjointImages, fileNames):
         if count%100==0 or count == len(fileNames)-1:
             print('Images conjoint saved: ', count)
         count += 1
+
+folderPath = 'conjointCBGX/Data/realSimplified'
+variables = ['Marca', 'Motor', 'Cambio_Transmisión_Combinación', 'Acabado', 'Precio']
+load_images(folderPath, variables)

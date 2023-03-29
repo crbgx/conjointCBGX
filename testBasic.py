@@ -1,4 +1,5 @@
 from natsort import natsorted
+from PIL import Image
 import os
 
 def get_string_between(string, char1, char2):
@@ -41,38 +42,33 @@ countPrimary = listadoSimple.count(variables[primaryValue])
 #print(countPrimary)
 temp0 = variables[0]
 
-counter = -1
+counter = 0
 tempList = []
+tempImageList = []
+variableImages = [[] for _ in variables]
 for fileName in listado:
     for i, name in enumerate(variables):
         if name in fileName:
             relativeNumber = get_string_between(fileName, '_', '.')
-            #print(relativeNumber)
             step2 = get_string_before_last(fileName, '_')
-            #print(step2)
             variableNameNumber = get_string_after_last(step2, '_')
-            #print(variableNameNumber)
             relativeIsANumber = variableNameNumber.isdigit()
-            #print(relativeIsANumber)
+            imagePath = f'{folderPath}/{fileName}'
             if relativeIsANumber == False:
-                variableLists[i].append(f'{folderPath}/{fileName}')
+                variableLists[i].append(imagePath)
+                variableImages[i].append(Image.open(imagePath).convert('RGB'))
             else:
                 counter += 1
-                tempList.append(f'{folderPath}/{fileName}')
+                tempList.append(imagePath)
+                tempImageList.append(Image.open(imagePath).convert('RGB'))
                 temp1 = get_string_before_last(step2, '_')
-                if counter == countPrimary:
-                    # print(tempList)
-                    # print('actualizamos')
+                if counter == countPrimary + 1:
                     variableLists[i].append(tempList)
+                    variableImages[i].append(tempImageList)
                     tempList = []
-                    counter = -1
-                # if temp1 != temp0:
-                #     print('actualizamos')
-                    #variableLists[i] = [[] for _ in variables]
-
-                # print(temp1)
-                # print('es complejo')
-                #variableLists[int(relativeNumb)][int(relativeNumber)].append(f'{folderPath}/{fileName}')
+                    tempImageList = []
+                    counter = 0
             break
 
 print(variableLists)
+print(variableImages)
