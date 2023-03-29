@@ -13,10 +13,21 @@ VERTICALSIZE = LIMIT * 31
 def create_row(disabled):
     global countLines
     row = [ sg.Text(f'Variable name {countLines}:'),
-            sg.InputText(key=f'-VARIABLE_{countLines}-', enable_events=True, size = (15, 1)), sg.FileBrowse(),
-            sg.Radio('Primary value', '-PRIMARY-', key = f'-PRIMARY_KEY_{countLines}-', default = True if countLines == 0 else False, disabled = disabled)]
+            sg.InputText(key=f'-VARIABLE_{countLines}-', enable_events = True, size = (20, 1)), sg.FileBrowse(file_types = [('JPG file', '*.jpg'), ('PNG file', '*.png')]),
+            sg.Radio('Primary value', '-PRIMARY-', key = f'-PRIMARY_KEY_{countLines}-', default = True if countLines == 0 else False, disabled = disabled),
+            sg.Checkbox('Secondary Value', default = False, key = f'-SECONDARY_VALUES_{countLines}-', disabled = disabled)]
     countLines += 1
     return row
+
+
+def update_variable_name(i):
+    newName = main.get_string_between(values[f'-VARIABLE_{i}-'], '/', '.')
+    newName = main.get_string_before_last(newName, '_')
+    if main.has_numbers(newName):
+        newName = main.get_string_before_last(newName, '_')
+    if newName == '':
+        return
+    window[f'-VARIABLE_{i}-'].Update(newName)
 
 
 ##############################     INTERFACE     ##############################
@@ -24,7 +35,7 @@ sg.theme('DarkTanBlue')
 
 layout = [  
             [sg.Text('Choose the folder where the images are located:')],
-            [sg.InputText(key='-FOLDER_PATH-', size = (70, 1)), sg.FolderBrowse()],
+            [sg.InputText(key = '-FOLDER_PATH-', size = (70, 1)), sg.FolderBrowse()],
             [sg.Text('Project:'), sg.InputText(key = '-PROJECT-', size = (42, 1))],
             [sg.Text('Language:'), sg.InputText(key = '-LANGUAGE-', size = (40, 1))],
             [sg.Text('Execution mode:'), sg.Radio('Simple', '-MODE-', key = '-SIMPLE_MODE-', default = True, enable_events = True), sg.Radio('Relative', '-MODE-', key = '-RELATIVE_MODE-', default = False, enable_events = True)],
@@ -54,10 +65,12 @@ while True:
     elif event == '-SIMPLE_MODE-':
         for i in range(0, countLines):
             window[f'-PRIMARY_KEY_{i}-'].update(disabled = True)
+            window[f'-SECONDARY_VALUES_{i}-'].update(disabled = True)
 
     elif event == '-RELATIVE_MODE-':
         for i in range(0, countLines):
             window[f'-PRIMARY_KEY_{i}-'].update(disabled = False)
+            window[f'-SECONDARY_VALUES_{i}-'].update(disabled = False)
 
     elif event == '-ADD COLUMN-':
         if countLines < LIMIT:
@@ -75,17 +88,59 @@ while True:
             countLines += 1
 
     elif event == 'EXECUTE_MAIN':
+        simpleMode = True if values['-SIMPLE_MODE-'] else False
         primaryValue = None
-        for i in range(0,countLines):
-            if values[f'-PRIMARY_KEY_{i}-']:
-                primaryValue = i
-                break
+        if simpleMode == False:
+            for i in range(0,countLines):
+                if values[f'-PRIMARY_KEY_{i}-']:
+                    primaryValue = i
+                    break
         folderPath = values['-FOLDER_PATH-']
         variables = [values[f'-VARIABLE_{i}-'] for i in range(0,countLines)]
         project = values['-PROJECT-']
         laguage = values['-LANGUAGE-']
         outputName = f'{project}{laguage}'
-        simpleMode = True if values['-SIMPLE_MODE-'] else False
+        secondaryValue = None
+        if simpleMode == False:
+            secondaryValue = [values[f'-SECONDARY_VALUES_{i}-'] for i in range(0,countLines)]
         main.main(folderPath, variables, primaryValue, outputName, simpleMode)
+
+    # Update variableName when data file is selected
+    elif event == '-VARIABLE_0-':
+        i = 0
+        update_variable_name(i)
+    
+    elif event == '-VARIABLE_1-':
+        i = 1
+        update_variable_name(i)
+    
+    elif event == '-VARIABLE_2-':
+        i = 2
+        update_variable_name(i)
+    
+    elif event == '-VARIABLE_3-':
+        i = 3
+        update_variable_name(i)
+    
+    elif event == '-VARIABLE_4-':
+        i = 4
+        update_variable_name(i)
+    
+    elif event == '-VARIABLE_5-':
+        i = 5
+        update_variable_name(i)
+    
+    elif event == '-VARIABLE_6-':
+        i = 6
+        update_variable_name(i)
+    
+    elif event == '-VARIABLE_7-':
+        i = 7
+        update_variable_name(i)
+    
+    elif event == '-VARIABLE_8-':
+        i = 8
+        update_variable_name(i)
+    
     
 window.close()

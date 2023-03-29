@@ -39,6 +39,31 @@ def check_file_not_empty(folderPath, variables, primaryValue):
     return True
 
 
+def get_string_between(string, char1, char2):
+    result = ''
+    try:
+        start = string.rindex(char1)
+        end = string.rindex(char2)
+        if start >= 0 and end >= 0:
+            result = string[start+1: end]
+    except ValueError:
+        pass
+    return result
+
+
+def get_string_before_last(string, char):
+    result = ''
+    try:
+        end = string.rindex(char)
+        if end >= 0:
+            result = string[:end]
+    except ValueError:
+        pass
+    return result
+
+
+def has_numbers(inputString):
+    return any(char.isdigit() for char in inputString)
 
 
 ##############################     MAIN PROGRAM     ##############################

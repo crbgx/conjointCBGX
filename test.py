@@ -3,27 +3,38 @@
 from moviepy.editor import *
 import time
 from humanfriendly import format_timespan
+from natsort import natsorted
 import merge_images
 import select_files
+from PIL import Image
+import main
 
 
-
+relativeVaribles = []
 
 def load_images(folderPath, variables):
     # Groups in sublists paths to files with common variable name
-    variableLists = [[] for _ in variableNames]
-    listado = natsorted(os.listdir(originalImagesPath))
+    variableLists = [[] for _ in variables]
+    listado = natsorted(os.listdir(folderPath))
     for fileName in listado:
-        for i, name in enumerate(variableNames):
+        for i, name in enumerate(variables):
             if name in fileName:
-                variableLists[i].append(f'{originalImagesPath}/{fileName}')
+                variableLists[i].append(f'{folderPath}/{fileName}')
                 break
 
     # Groups in sublists images objects with common variable name
-    variableImages = [[] for _ in variableNames]
+    variableImages = [[] for _ in variables]
     for i, typeVariable in enumerate(variableLists):
         for image in typeVariable:
             variableImages[i].append(Image.open(image).convert('RGB'))
+
+    #prueba = {'Test':'Test1'}, {'Test':'Test2'}
+    #prueba.append({'Test3': 'Test4'})
+    print(listado)
+    print(variableLists)
+    print(variableImages)
+    # print(prueba)
+    # print(prueba['Test'])
 
 
 
@@ -33,15 +44,15 @@ def main(folderPath, variables, primaryValue, outputName, simpleMode):
     print('Starting program...')
     start = time.time()
     
-    if check_file_not_empty(folderPath, variables, primaryValue) == False:
-        finish_timer(start)
+    if main.check_file_not_empty(folderPath, variables, primaryValue) == False:
+        main.finish_timer(start)
         return
 
     load_images(folderPath, variables)
     
     variableIndex = select_files.select_files(variables, load_images.variableLists, simpleMode)
 
-    detect_empty_list(load_images.variableImages, start)
+    main.detect_empty_list(load_images.variableImages, start)
 
     merge_images.join_image(load_images.variableImages, variableIndex)
     finalNamesList = []
@@ -53,8 +64,9 @@ def main(folderPath, variables, primaryValue, outputName, simpleMode):
 
 
 
-
-
+folderPath = 'conjointCBGX/Data/real'
+variables = ['Marca', 'Motor', 'Cambio_Transmisión_Combinación', 'Acabado', 'Precio']
+load_images(folderPath, variables)
 
 
 
