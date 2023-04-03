@@ -33,7 +33,7 @@ def get_string_after_last(string, char1):
 
 
 # folderPath = 'conjointCBGX/Data/simplified'
-folderPath = 'conjointCBGX/Data/simplified'
+folderPath = 'conjointCBGX/Data/realSimplified'
 variables = ['Marca', 'Motor', 'Cambio_Transmisión_Combinación', 'Acabado', 'Precio']
 primaryValue = 0
 secondaryValue = [False, False, False, False, True]
@@ -41,7 +41,7 @@ projectName = 'A'
 languageName = 'SPTest'
 outputName = f'{projectName}{languageName}'
 
-primaryValueLength = variables[primaryValue]
+# primaryValueLength = variables[primaryValue]
 variableLists = [[] for _ in variables]
 listado = natsorted(os.listdir(folderPath))
 listadoSimple = [get_string_before_last(i, '_') for i in listado]
@@ -51,7 +51,6 @@ counter = 0
 tempList = []
 tempImageList = []
 tempNumberList = []
-variableImages = [[] for _ in variables]
 variableNumbers = [[] for _ in variables]
 for fileName in listado:
     for i, name in enumerate(variables):
@@ -64,7 +63,6 @@ for fileName in listado:
             if relativeIsANumber == False:
                 variableLists[i].append(imagePath)
                 variableNumbers[i].append(relativeNumber)
-                variableImages[i].append(Image.open(imagePath).convert('RGB'))
             else:
                 counter += 1
                 tempList.append(imagePath)
@@ -73,7 +71,6 @@ for fileName in listado:
                 if counter == countPrimary + 1:
                     variableLists[i].append(tempList)
                     variableNumbers[i].append(tempNumberList)
-                    variableImages[i].append(tempImageList)
                     tempList = []
                     tempImageList = []
                     tempNumberList = []

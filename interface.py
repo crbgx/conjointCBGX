@@ -14,8 +14,8 @@ def create_row(disabled):
     global countLines
     row = [ sg.Text(f'Variable name {countLines}:'),
             sg.InputText(key=f'-VARIABLE_{countLines}-', enable_events = True, size = (20, 1)), sg.FileBrowse(file_types = [('JPG file', '*.jpg'), ('PNG file', '*.png')]),
-            sg.Radio('Primary value', '-PRIMARY-', key = f'-PRIMARY_KEY_{countLines}-', default = True if countLines == 0 else False, disabled = disabled),
-            sg.Checkbox('Secondary Value', default = False, key = f'-SECONDARY_VALUES_{countLines}-', disabled = disabled)]
+            sg.Radio('Primary', '-PRIMARY-', key = f'-PRIMARY_KEY_{countLines}-', default = True if countLines == 0 else False, disabled = disabled),
+            sg.Checkbox('Secondary', default = False, key = f'-SECONDARY_VALUES_{countLines}-', disabled = disabled)]
     countLines += 1
     return row
 
