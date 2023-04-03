@@ -33,7 +33,7 @@ def get_string_after_last(string, char1):
 
 
 # folderPath = 'conjointCBGX/Data/simplified'
-folderPath = 'conjointCBGX/Data/realSimplified'
+folderPath = 'conjointCBGX/Data/simplified'
 variables = ['Marca', 'Motor', 'Cambio_Transmisión_Combinación', 'Acabado', 'Precio']
 primaryValue = 0
 secondaryValue = [False, False, False, False, True]
@@ -95,15 +95,15 @@ combinations = [[]]
 for k, lst in enumerate(variableNumbers):
     #print('lst', lst)
     temp = []
-    for index, i in enumerate(lst):
+    for iIndex, i in enumerate(lst):
         if k == primaryValue:
-            primaryKey = index
+            primaryKey = iIndex
         #print('i', i)
-        for j in combinations:
+        for jIndex, j in enumerate(combinations):
             #print('j', j)
             if type(i) == list:
                 #print(i)
-                temp.append(str(j[primaryKey]) + i)
+                temp.append(j[primaryKey] + list(i))
             else:
                 temp.append(j+[i])
     combinations = temp
